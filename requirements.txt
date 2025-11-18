@@ -1,0 +1,6 @@
+Flask
+pandas
+openpyxl
+werkzeug
+xlsxwriter
+gunicorn

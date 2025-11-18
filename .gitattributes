@@ -1,0 +1,45 @@
+###############################################
+# 🌍 CONFIGURAÇÃO UNIVERSAL DO GITATTRIBUTES
+# Mantém consistência entre sistemas (Windows, macOS, Linux)
+###############################################
+
+# Padroniza finais de linha (line endings)
+* text=auto
+
+# Usa LF (Unix-style) para código
+*.py     text eol=lf
+*.js     text eol=lf
+*.jsx    text eol=lf
+*.ts     text eol=lf
+*.tsx    text eol=lf
+*.css    text eol=lf
+*.html   text eol=lf
+*.json   text eol=lf
+*.md     text eol=lf
+*.yml    text eol=lf
+*.yaml   text eol=lf
+*.txt    text eol=lf
+
+# Mantém arquivos binários intactos
+*.png    binary
+*.jpg    binary
+*.jpeg   binary
+*.gif    binary
+*.ico    binary
+*.pdf    binary
+*.zip    binary
+*.docx   binary
+*.xlsx   binary
+*.pptx   binary
+*.exe    binary
+
+# Evita conversão automática de imagens e binários
+*.psd    binary
+*.mp3    binary
+*.mp4    binary
+*.mov    binary
+*.avi    binary
+*.wav    binary
+
+# Evita problemas de merge em notebooks
+*.ipynb  text eol=lf merge=union

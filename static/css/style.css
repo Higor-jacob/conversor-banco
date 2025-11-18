@@ -1,0 +1,7 @@
+body {
+    background: radial-gradient(circle at top, #303746 0, #111827 55%, #020617 100%);
+}
+
+.card {
+    backdrop-filter: blur(8px);
+}

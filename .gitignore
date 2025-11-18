@@ -1,0 +1,98 @@
+###############################################
+# 🌍 GITIGNORE UNIVERSAL
+# Ignora arquivos temporários, caches e ambientes virtuais
+###############################################
+
+# Ignora caches Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+
+# Ambientes virtuais
+env/
+.venv/
+venv/
+ENV/
+build/
+dist/
+*.egg-info/
+
+# Logs e arquivos temporários
+*.log
+*.tmp
+*.bak
+*.swp
+*.swo
+*.lock
+*.pid
+*~
+
+# Configurações locais de IDEs e editores
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# macOS / Windows system files
+.DS_Store
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# Ambientes Node.js / JavaScript
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+package-lock.json
+
+# Projetos web (builds e transpilações)
+.cache/
+.next/
+out/
+coverage/
+*.map
+
+# Notebooks e dados temporários
+.ipynb_checkpoints/
+*.sqlite3
+*.db
+*.csv
+*.json.backup
+*.rdb
+
+# Arquivos de deploy e container
+Dockerfile
+docker-compose.override.yml
+*.env
+.env.*
+!.env.example
+
+# Backups e zips
+*.zip
+*.tar
+*.gz
+*.7z
+*.rar
+
+# Arquivos específicos do VSCode e PyCharm
+.history/
+.idea/
+.vscode/
+
+# Arquivos de sistema de compilação
+*.spec
+*.exe
+*.dll
+*.so
+*.dylib
+
+# Arquivos PDF, DOCX etc (gerados automaticamente)
+output/
+reports/
+docs_build/
+
+uploads/
+outputs/
+*.sql

@@ -1,0 +1,133 @@
+{% extends "base.html" %}
+{% block conteudo %}
+
+<div class="row justify-content-center">
+    <div class="col-lg-8">
+
+        <div class="text-center mb-4">
+            <h1 class="fw-bold">Conversor de Banco</h1>
+            <p class="text-secondary mb-1">
+                Envie um arquivo <code>.db</code> (SQLite) ou <code>.sql</code> (SQLite, MySQL, PostgreSQL)
+            </p>
+            <p class="text-secondary">
+                e receba um <span class="fw-semibold text-light">Excel (.xlsx)</span> com todas as tabelas.
+            </p>
+        </div>
+
+        <div class="card bg-secondary bg-opacity-10 border border-secondary rounded-4 shadow-lg mb-3">
+            <div class="card-body p-4">
+
+                <form id="upload-form">
+                    <div class="mb-3">
+                        <label class="form-label text-light">
+                            Selecione o arquivo de banco (.db, .sqlite, .sql, .mysql, .pgsql)
+                        </label>
+
+                        <input
+                            class="form-control bg-dark text-light border-secondary"
+                            type="file"
+                            name="file"
+                            id="file-input"
+                            required
+                        >
+                    </div>
+
+                    <button id="btn-converter" class="btn btn-outline-light w-100" type="submit">
+                        <span id="btn-text">Converter para Excel</span>
+                        <span id="btn-spinner" class="spinner-border spinner-border-sm ms-2 d-none"
+                              role="status" aria-hidden="true"></span>
+                    </button>
+                </form>
+
+                <div id="status-area" class="mt-3" style="min-height: 1.5rem;">
+                    <!-- mensagens de status -->
+                </div>
+
+                <div id="download-area" class="mt-3 d-none">
+                    <a id="download-link" class="btn btn-success w-100" href="#" download>
+                        📥 Baixar Excel Gerado
+                    </a>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="small text-secondary text-center">
+            Dica: se o arquivo .sql for um dump completo contendo <code>CREATE TABLE</code> e <code>INSERT</code>,
+            a conversão funciona melhor.
+        </div>
+
+    </div>
+</div>
+
+<script>
+    const form = document.getElementById('upload-form');
+    const btn = document.getElementById('btn-converter');
+    const btnText = document.getElementById('btn-text');
+    const btnSpinner = document.getElementById('btn-spinner');
+    const statusArea = document.getElementById('status-area');
+    const downloadArea = document.getElementById('download-area');
+    const downloadLink = document.getElementById('download-link');
+
+    function setStatus(message, type = "info") {
+        const classes = {
+            "info": "text-info",
+            "success": "text-success",
+            "error": "text-danger",
+            "warning": "text-warning"
+        };
+        statusArea.className = classes[type] || "text-info";
+        statusArea.textContent = message;
+    }
+
+    function setLoading(isLoading) {
+        if (isLoading) {
+            btn.disabled = true;
+            btnText.textContent = "Convertendo...";
+            btnSpinner.classList.remove("d-none");
+        } else {
+            btn.disabled = false;
+            btnText.textContent = "Converter para Excel";
+            btnSpinner.classList.add("d-none");
+        }
+    }
+
+    form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        setLoading(true);
+        setStatus("Enviando arquivo e processando...", "info");
+        downloadArea.classList.add("d-none");
+
+        const formData = new FormData(form);
+
+        try {
+            const resp = await fetch("/upload", {
+                method: "POST",
+                body: formData
+            });
+
+            const data = await resp.json();
+
+            if (!resp.ok) {
+                setStatus(data.error || "❌ Erro na conversão. Verifique o arquivo.", "error");
+                return;
+            }
+
+            if (data.download_url) {
+                downloadLink.href = data.download_url;
+                downloadArea.classList.remove("d-none");
+                setStatus("✅ Conversão concluída! Clique em baixar.", "success");
+            } else {
+                setStatus("❌ Erro inesperado. Tente novamente.", "error");
+            }
+
+        } catch (err) {
+            console.error(err);
+            setStatus("❌ Erro de comunicação com o servidor.", "error");
+        } finally {
+            setLoading(false);
+        }
+    });
+</script>
+
+{% endblock %}
