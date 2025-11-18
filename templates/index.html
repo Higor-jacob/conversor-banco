@@ -18,16 +18,20 @@
             <div class="card-body p-4">
 
                 <form id="upload-form">
-                    <div class="mb-3">
-                        <label class="form-label text-light">
-                            Selecione o arquivo de banco (.db, .sqlite, .sql, .mysql, .pgsql)
-                        </label>
+                    <!-- ZONA DE DRAG & DROP -->
+                    <div id="drop-zone"
+                        class="border border-secondary border-2 rounded-4 bg-dark text-center py-5 mb-3"
+                        style="cursor: pointer; transition: 0.3s;">
+                        
+                        <p class="text-light mb-1 fs-5">📂 Arraste seu arquivo aqui</p>
+                        <p class="text-secondary small">ou clique para selecionar</p>
 
                         <input
-                            class="form-control bg-dark text-light border-secondary"
                             type="file"
                             name="file"
                             id="file-input"
+                            class="d-none"
+                            accept=".db,.sqlite,.sql,.mysql,.pgsql"
                             required
                         >
                     </div>
@@ -126,6 +130,43 @@
             setStatus("❌ Erro de comunicação com o servidor.", "error");
         } finally {
             setLoading(false);
+        }
+    });
+
+    // ELEMENTOS DO DRAG & DROP
+    const dropZone = document.getElementById("drop-zone");
+    const fileInput = document.getElementById("file-input");
+
+    // Clique na área abre o seletor
+    dropZone.addEventListener("click", () => fileInput.click());
+
+    // Quando um arquivo é selecionado manualmente
+    fileInput.addEventListener("change", () => {
+        if (fileInput.files.length > 0) {
+            dropZone.querySelector("p").textContent = "Arquivo selecionado: " + fileInput.files[0].name;
+        }
+    });
+
+    // Arquivo arrastado pra dentro
+    dropZone.addEventListener("dragover", (e) => {
+        e.preventDefault();
+        dropZone.classList.add("dragover");
+    });
+
+    // Arquivo sai da área
+    dropZone.addEventListener("dragleave", () => {
+        dropZone.classList.remove("dragover");
+    });
+
+    // Soltou arquivo no dropzone
+    dropZone.addEventListener("drop", (e) => {
+        e.preventDefault();
+        dropZone.classList.remove("dragover");
+
+        if (e.dataTransfer.files.length > 0) {
+            fileInput.files = e.dataTransfer.files;
+            dropZone.querySelector("p").textContent =
+                "Arquivo selecionado: " + e.dataTransfer.files[0].name;
         }
     });
 </script>
